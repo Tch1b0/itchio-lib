@@ -44,7 +44,11 @@ class Game:
         if earnings == None:
             self.earnings = None
         else:
-            self.earnings = Earnings.parse_from_dict(earnings)
+            self.earnings = []
+            for entry in earnings:
+                self.earnings.append(
+                    Earnings.parse_from_dict(entry)
+                )
 
 
     @staticmethod
