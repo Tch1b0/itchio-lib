@@ -1,4 +1,4 @@
-from itchio.game.Earnings import Earnings
+from itchio.Earnings import Earnings
 
 
 class Game:

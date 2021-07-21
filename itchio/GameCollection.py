@@ -1,5 +1,5 @@
 from itchio.Session import Session
-from itchio.game.Game import Game
+from itchio.Game import Game
 
 class GameCollection:
     def __init__(self, session: Session) -> None:
