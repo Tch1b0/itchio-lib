@@ -21,3 +21,10 @@ print(me.username)
 ```
 Tch1b0
 ```
+
+## Installation
+This library is currently **not** available on [pypi](https://pypi.org).
+However, you can still install this library using [pip](https://pypi.org/project/pip/).
+```
+$ pip install git+https://github.com/Tch1b0/itchio-lib.git#egg=itchio
+```
