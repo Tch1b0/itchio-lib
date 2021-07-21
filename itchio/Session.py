@@ -9,7 +9,7 @@ class Session:
         self.url = f"{url}/{key}/"
         self.session = requests.session()
     
-    def get(self, route: str):
+    def get(self, route: str) -> dict:
         """
         Get a certain ressource
         """

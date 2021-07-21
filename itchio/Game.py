@@ -1,3 +1,7 @@
+from logging import exception
+from itchio.User import User
+from itchio.Purchase import Purchase
+from itchio.Session import Session
 from itchio.Earnings import Earnings
 
 
@@ -21,7 +25,8 @@ class Game:
         type: str,
         url: str,
         views_count: int,
-        earnings: dict or None):
+        earnings: dict or None,
+        session: Session):
 
         self.cover_url = cover_url
         self.created_at = created_at
@@ -44,15 +49,59 @@ class Game:
         if earnings == None:
             self.earnings = None
         else:
-            self.earnings = Earnings.parse_from_dict(earnings)
+            self.earnings = []
+            for entry in earnings:
+                self.earnings.append(
+                    Earnings.parse_from_dict(entry)
+                )
 
+        self.session = session
+
+    def purchases(self, user: str or int or User) -> list[Purchase]:
+        """
+        Get the purchases of this Game
+
+        Parameters:
+            `user`: Either the id, the User object or the email of the User
+        """
+
+        param = ""
+        
+        if type(user) == User:
+            param = "user_id"
+            name = User.id
+        elif type(user) == str:
+            param = "email"
+            name = user
+        elif type(user) == int:
+            param = "user_id"
+            name = user
+        else:
+            raise ValueError("Parameter user has either to be type of str, int or User")
+
+        data = self.session.get(f"game/{self.id}/purchases?{param}={name}")
+        self.purchases = []
+        for purchase in data["purchases"]:
+            self.purchases.append(
+                Purchase.parse_from_dict(purchase)
+            )
+
+        return self.purchases
 
     @staticmethod
-    def parse_from_dict(data: dict):
+    def parse_from_dict(data: dict, session: Session) -> object:
         if "purchase_count" not in data:
             data["purchase_count"] = None
         if "earnings" not in data:
             data["earnings"] = None
+        if "downloads_count" not in data:
+            data["downloads_count"] = None
+        if "published" not in data:
+            data["published"] = None
+        if "views_count" not in data:
+            data["views_count"] = None
+        if "title" not in data:
+            data["title"] = None
 
         return Game(
             cover_url = data["cover_url"],
@@ -72,5 +121,6 @@ class Game:
             type = data["type"],
             url = data["url"],
             views_count = data["views_count"],
-            earnings = data["earnings"]
+            earnings = data["earnings"],
+            session = session
         )
