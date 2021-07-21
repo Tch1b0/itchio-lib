@@ -1,4 +1,3 @@
-from itchio.user.UserCollection import UserCollection
 import unittest
 import itchio
 import requests_mock
