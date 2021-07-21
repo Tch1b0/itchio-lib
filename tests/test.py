@@ -54,9 +54,26 @@ class TestUser(unittest.TestCase):
                     }
                 ]
             })
+            m.get("https://itch.io/api/1/1234/game/3/purchases?user_id=11561", json = {
+                "purchases": [
+                    {
+                        "donation":False,
+                        "id":11561,
+                        "email":"leaf@example.com",
+                        "created_at":"2014-02-28 00:25:09",
+                        "source":"amazon",
+                        "currency":"USD",
+                        "price":"$1.00",
+                        "sale_rate":0,
+                        "game_id":3
+                    }
+                ]
+            })
 
             session = itchio.Session("1234")
             gameCollection = itchio.GameCollection(session)
-            self.assertTrue(gameCollection.all()[0].id == 3)
+            game = gameCollection.all()[0]
+            self.assertTrue(game.id == 3)
+            self.assertTrue(game.purchases(11561)[0].game_id == 3)
 
 unittest.main()
