@@ -94,6 +94,14 @@ class Game:
             data["purchase_count"] = None
         if "earnings" not in data:
             data["earnings"] = None
+        if "downloads_count" not in data:
+            data["downloads_count"] = None
+        if "published" not in data:
+            data["published"] = None
+        if "views_count" not in data:
+            data["views_count"] = None
+        if "title" not in data:
+            data["title"] = None
 
         return Game(
             cover_url = data["cover_url"],

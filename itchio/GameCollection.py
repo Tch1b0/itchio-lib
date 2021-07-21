@@ -19,3 +19,7 @@ class GameCollection:
             )
 
         return games
+
+    def get_by_id(self, id: int) -> Game:
+        data = self.session.get(f"game/{id}")
+        return Game.parse_from_dict(data["game"], self.session)
