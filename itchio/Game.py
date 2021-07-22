@@ -1,3 +1,5 @@
+from typing import Union, ValuesView
+from itchio.DownloadKey import DownloadKey
 from logging import exception
 from itchio.User import User
 from itchio.Purchase import Purchase
@@ -19,13 +21,13 @@ class Game:
         p_windows: bool,
         published: bool,
         published_at: str,
-        purchase_count: int or None,
+        purchase_count: Union[int, None],
         short_text: str,
         title: str,
         type: str,
         url: str,
         views_count: int,
-        earnings: dict or None,
+        earnings: Union[dict, None],
         session: Session):
 
         self.cover_url = cover_url
@@ -57,9 +59,9 @@ class Game:
 
         self.session = session
 
-    def purchases(self, user: str or int or User) -> list[Purchase]:
+    def purchases(self, user: Union[str, int, User]) -> list[Purchase]:
         """
-        Get the purchases of this Game
+        Get a purchases of this Game
 
         Parameters:
             `user`: Either the id, the User object or the email of the User
@@ -77,16 +79,47 @@ class Game:
             param = "user_id"
             name = user
         else:
-            raise ValueError("Parameter user has either to be type of str, int or User")
+            raise ValueError(f"Parameter user has either to be type of str, int or User, not {type(user)}")
 
         data = self.session.get(f"game/{self.id}/purchases?{param}={name}")
-        self.purchases = []
+        purchases = []
         for purchase in data["purchases"]:
             self.purchases.append(
                 Purchase.parse_from_dict(purchase)
             )
 
-        return self.purchases
+        return purchases
+
+    def download_keys(self, user_or_key: Union[str, int, User]) -> DownloadKey:
+        """
+        Get a download key of this Game
+
+        Parameters:
+            `user_or_key`: Either the id of the User, the email address of the User, the User object or the download key
+        """
+
+        param = ""
+
+        if type(user_or_key) == User:
+            param = "user_id"
+            name  = user_or_key.id
+        elif type(user_or_key) == int:
+            param = "user_id"
+            name = user_or_key
+        elif type(user_or_key) == str and "@" in user_or_key:
+            param = "email"
+            name = user_or_key
+        elif type(user_or_key) == str:
+            param = "download_key"
+            name = user_or_key
+        else:
+            raise ValueError(f"Parameter user_or_key has either to be type of str, int or User, not {type(user_or_key)}")
+
+        data = self.session.get(f"game/{self.id}/download_keys?{param}={name}")
+        if "errors" in data:
+            raise Exception(data["errors"])
+        else:
+            return DownloadKey.parse_from_dict(data["download_key"])
 
     @staticmethod
     def parse_from_dict(data: dict, session: Session) -> object:
