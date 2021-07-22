@@ -1,7 +1,10 @@
+from typing import Union
+
+
 class Purchase:
     def __init__(
         self,
-        donation: bool or None,
+        donation: Union[bool, None],
         id: int,
         email: str,
         created_at: str,
