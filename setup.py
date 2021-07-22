@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="itchio",
     version="0.1",
-    description="Interact with the REST-api of itch.io",
+    description="Interact with the REST-API of itch.io",
     long_description=open("./README.md").read(),
     long_description_content_type="text/markdown",
     license="MIT",
