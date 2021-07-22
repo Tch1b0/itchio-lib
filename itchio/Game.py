@@ -84,7 +84,7 @@ class Game:
         data = self.session.get(f"game/{self.id}/purchases?{param}={name}")
         purchases = []
         for purchase in data["purchases"]:
-            self.purchases.append(
+            purchases.append(
                 Purchase.parse_from_dict(purchase)
             )
 
