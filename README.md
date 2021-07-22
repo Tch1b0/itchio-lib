@@ -52,5 +52,5 @@ Tch1b0
 ## Installation
 You can install this library via [pip](https://pypi.org)
 ```
-$ pip install git+https://github.com/Tch1b0/itchio-lib.git#egg=itchio
+$ pip install itchio
 ```
