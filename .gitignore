@@ -1,3 +1,4 @@
 /tests/private_test.py
 /itchio.egg-info
 __pycache__
+/dist
