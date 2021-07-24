@@ -1,3 +1,6 @@
+from itchio.Session import Session
+
+
 class User:
     """
     An Object representing the User ressource
@@ -11,8 +14,8 @@ class User:
         url: str,
         press_user: bool,
         developer: bool,
-        id: int
-        ):
+        id: int,
+        session: Session):
         self.username = username
         self.gamer = gamer
         self.display_name = display_name
@@ -21,9 +24,14 @@ class User:
         self.press_user = press_user
         self.developer = developer
         self.id = id
+        self.session = session
+
+    def sync(self) -> object:
+        data = self.session.get("me")
+        return self.parse_from_dict(data["user"], self.session)
 
     @staticmethod
-    def parse_from_dict(data: dict) -> object:
+    def parse_from_dict(data: dict, session: Session) -> object:
         # If there is no 'display_name', the value is the same as the username
         if "display_name" not in data:
             data["display_name"] = data["username"]
@@ -36,5 +44,6 @@ class User:
             url = data["url"],
             press_user = data["press_user"],
             developer = data["developer"],
-            id = data["id"]
+            id = data["id"],
+            session = session
         )

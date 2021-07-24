@@ -1,6 +1,5 @@
-from typing import Union, ValuesView
+from typing import Union
 from itchio.DownloadKey import DownloadKey
-from logging import exception
 from itchio.User import User
 from itchio.Purchase import Purchase
 from itchio.Session import Session
@@ -120,6 +119,11 @@ class Game:
             raise Exception(data["errors"])
         else:
             return DownloadKey.parse_from_dict(data["download_key"])
+
+    def sync(self) -> object:
+        data = self.session.get(f"game/{self.id}")
+        return self.parse_from_dict(data, self.session)
+
 
     @staticmethod
     def parse_from_dict(data: dict, session: Session) -> object:
