@@ -121,8 +121,12 @@ class Game:
             return DownloadKey.parse_from_dict(data["download_key"])
 
     def sync(self) -> object:
+        """
+        Sync this object with the information in the API
+        """
         data = self.session.get(f"game/{self.id}")
-        return self.parse_from_dict(data, self.session)
+        new_game = self.parse_from_dict(data, self.session)
+        self.__dict__.update(new_game.__dict__)
 
 
     @staticmethod

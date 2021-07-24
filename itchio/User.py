@@ -27,8 +27,12 @@ class User:
         self.session = session
 
     def sync(self) -> object:
+        """
+        Sync this object with the information in the API
+        """
         data = self.session.get("me")
-        return self.parse_from_dict(data["user"], self.session)
+        new_user = self.parse_from_dict(data["user"], self.session)
+        self.__dict__.update(new_user.__dict__)
 
     @staticmethod
     def parse_from_dict(data: dict, session: Session) -> object:
