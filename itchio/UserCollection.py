@@ -13,4 +13,4 @@ class UserCollection:
         Get your account / The owner of the token
         """
         data = self.session.get("me")
-        return User.parse_from_dict(data["user"])
+        return User.parse_from_dict(data["user"], self.session)
