@@ -120,15 +120,6 @@ class Game:
         else:
             return DownloadKey.parse_from_dict(data["download_key"])
 
-    def sync(self) -> object:
-        """
-        Sync this object with the information in the API
-        """
-        data = self.session.get(f"game/{self.id}")
-        new_game = self.parse_from_dict(data, self.session)
-        self.__dict__.update(new_game.__dict__)
-
-
     @staticmethod
     def parse_from_dict(data: dict, session: Session) -> object:
         if "purchase_count" not in data:
@@ -143,6 +134,20 @@ class Game:
             data["views_count"] = None
         if "title" not in data:
             data["title"] = None
+        if "cover_url" not in data:
+            data["cover_url"] = None
+        if "created_at" not in data:
+            data["created_at"] = None
+        if "id" not in data:
+            data["id"] = None
+        if "min_price" not in data:
+            data["min_price"] = None
+        if "cover_url" not in data:
+            data["cover_url"] = None
+        if "published_at" not in data:
+            data["published_at"] = None
+        if  "short_text" not in data:
+            data["short_text"] = None
 
         return Game(
             cover_url = data["cover_url"],
