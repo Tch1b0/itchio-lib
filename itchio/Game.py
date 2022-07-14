@@ -122,8 +122,8 @@ class Game:
         else:
             return DownloadKey.parse_from_dict(data["download_key"])
 
-    @staticmethod
-    def parse_from_dict(data: dict, session: Session) -> object:
+    @classmethod
+    def parse_from_dict(cls, data: dict, session: Session):
         if "purchase_count" not in data:
             data["purchase_count"] = None
         if "earnings" not in data:
@@ -151,7 +151,7 @@ class Game:
         if "short_text" not in data:
             data["short_text"] = None
 
-        return Game(
+        return cls(
             cover_url=data["cover_url"],
             created_at=data["created_at"],
             downloads_count=data["downloads_count"],

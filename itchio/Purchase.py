@@ -24,9 +24,9 @@ class Purchase:
         self.sale_rate = sale_rate
         self.game_id = game_id
 
-    @staticmethod
-    def parse_from_dict(data: dict):
-        return Purchase(
+    @classmethod
+    def parse_from_dict(cls, data: dict):
+        return cls(
             donation=data["donation"],
             id=data["id"],
             email=data["email"],

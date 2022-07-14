@@ -11,5 +11,6 @@ setup(
     url="https://github.com/Tch1b0/itchio-lib",
     author_email="jpour3006@gmail.com",
     packages=["itchio"],
-    install_requires=["requests==2.25.1"]
+    install_requires=["requests==2.25.1"],
+    python_requires=">3.5"
 )
