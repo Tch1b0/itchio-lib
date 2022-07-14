@@ -1,0 +1,34 @@
+name: Generate docs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  gen-docs:
+    name: Generate docs and deploy to GitHub pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4.1.0
+        with:
+          python-version: "3.x"
+
+      - name: Setup docs-generator
+        run: pip install pdoc3
+
+      - name: Generate docs
+        run: pdoc3 --html ./itchio/ -o ./docs
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3.0.0
+        with:
+          target_branch: gh-pages
+          build_dir: docs/itchio
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
