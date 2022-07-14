@@ -1,14 +1,16 @@
 # itchio-lib
 
-Use the REST-API of itch.io with python in a simple way
+Use the REST-API of itch.io with python in a simple way.
 
 ## Installation
 
-You can install this library via [pip](https://pypi.org)
+You can install this library via [pip](https://pypi.org):
 
 ```
 $ pip install itchio
 ```
+
+You **may** need to install the `typing` module, depending on your python version.
 
 ## Documentation
 
