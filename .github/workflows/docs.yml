@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Install required packages
+        run: pip install -r requirements.txt
+
       - name: Setup docs-generator
         run: pip install pdoc3
 
