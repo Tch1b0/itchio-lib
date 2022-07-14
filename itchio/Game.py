@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 from itchio.DownloadKey import DownloadKey
 from itchio.User import User
 from itchio.Purchase import Purchase
@@ -8,26 +8,26 @@ from itchio.Earnings import Earnings
 
 class Game:
     def __init__(
-        self,
-        cover_url: str,
-        created_at: str,
-        downloads_count: int,
-        id: int,
-        min_price: int,
-        p_android: bool,
-        p_linux: bool,
-        p_osx: bool,
-        p_windows: bool,
-        published: bool,
-        published_at: str,
-        purchase_count: Union[int, None],
-        short_text: str,
-        title: str,
-        type: str,
-        url: str,
-        views_count: int,
-        earnings: Union[dict, None],
-        session: Session):
+            self,
+            cover_url: str,
+            created_at: str,
+            downloads_count: int,
+            id: int,
+            min_price: int,
+            p_android: bool,
+            p_linux: bool,
+            p_osx: bool,
+            p_windows: bool,
+            published: bool,
+            published_at: str,
+            purchase_count: Union[int, None],
+            short_text: str,
+            title: str,
+            type: str,
+            url: str,
+            views_count: int,
+            earnings: Union[dict, None],
+            session: Session):
 
         self.cover_url = cover_url
         self.created_at = created_at
@@ -58,16 +58,16 @@ class Game:
 
         self.session = session
 
-    def purchases(self, user: Union[str, int, User]) -> list[Purchase]:
+    def purchases(self, user: Union[str, int, User]) -> List[Purchase]:
         """
-        Get a purchases of this Game
+        Get the purchases of this Game
 
         Parameters:
             `user`: Either the id, the User object or the email of the User
         """
 
         param = ""
-        
+
         if type(user) == User:
             param = "user_id"
             name = User.id
@@ -78,7 +78,8 @@ class Game:
             param = "user_id"
             name = user
         else:
-            raise ValueError(f"Parameter user has either to be type of str, int or User, not {type(user)}")
+            raise ValueError(
+                f"Parameter user has either to be type of str, int or User, not {type(user)}")
 
         data = self.session.get(f"game/{self.id}/purchases?{param}={name}")
         purchases = []
@@ -101,7 +102,7 @@ class Game:
 
         if type(user_or_key) == User:
             param = "user_id"
-            name  = user_or_key.id
+            name = user_or_key.id
         elif type(user_or_key) == int:
             param = "user_id"
             name = user_or_key
@@ -112,7 +113,8 @@ class Game:
             param = "download_key"
             name = user_or_key
         else:
-            raise ValueError(f"Parameter user_or_key has either to be type of str, int or User, not {type(user_or_key)}")
+            raise ValueError(
+                f"Parameter user_or_key has either to be type of str, int or User, not {type(user_or_key)}")
 
         data = self.session.get(f"game/{self.id}/download_keys?{param}={name}")
         if "errors" in data:
@@ -120,8 +122,8 @@ class Game:
         else:
             return DownloadKey.parse_from_dict(data["download_key"])
 
-    @staticmethod
-    def parse_from_dict(data: dict, session: Session) -> object:
+    @classmethod
+    def parse_from_dict(cls, data: dict, session: Session):
         if "purchase_count" not in data:
             data["purchase_count"] = None
         if "earnings" not in data:
@@ -146,27 +148,27 @@ class Game:
             data["cover_url"] = None
         if "published_at" not in data:
             data["published_at"] = None
-        if  "short_text" not in data:
+        if "short_text" not in data:
             data["short_text"] = None
 
-        return Game(
-            cover_url = data["cover_url"],
-            created_at = data["created_at"],
-            downloads_count = data["downloads_count"],
-            id = data["id"],
-            min_price = data["min_price"],
-            p_android = data["p_android"],
-            p_linux = data["p_linux"],
-            p_osx = data["p_osx"],
-            p_windows = data["p_windows"],
-            published = data["published"],
-            published_at = data["published_at"],
-            purchase_count = data["purchase_count"],
-            short_text = data["short_text"],
-            title = data["title"],
-            type = data["type"],
-            url = data["url"],
-            views_count = data["views_count"],
-            earnings = data["earnings"],
-            session = session
+        return cls(
+            cover_url=data["cover_url"],
+            created_at=data["created_at"],
+            downloads_count=data["downloads_count"],
+            id=data["id"],
+            min_price=data["min_price"],
+            p_android=data["p_android"],
+            p_linux=data["p_linux"],
+            p_osx=data["p_osx"],
+            p_windows=data["p_windows"],
+            published=data["published"],
+            published_at=data["published_at"],
+            purchase_count=data["purchase_count"],
+            short_text=data["short_text"],
+            title=data["title"],
+            type=data["type"],
+            url=data["url"],
+            views_count=data["views_count"],
+            earnings=data["earnings"],
+            session=session
         )

@@ -1,10 +1,12 @@
 from itchio.Session import Session
 from itchio.User import User
 
+
 class UserCollection:
     """
     Get User info
     """
+
     def __init__(self, session: Session) -> None:
         self.session = session
 
