@@ -4,6 +4,7 @@ from itchio.User import User
 from itchio.Purchase import Purchase
 from itchio.Session import Session
 from itchio.Earnings import Earnings
+from .utility import satisfy_dict
 
 
 class Game:
@@ -124,32 +125,21 @@ class Game:
 
     @classmethod
     def parse_from_dict(cls, data: dict, session: Session):
-        if "purchase_count" not in data:
-            data["purchase_count"] = None
-        if "earnings" not in data:
-            data["earnings"] = None
-        if "downloads_count" not in data:
-            data["downloads_count"] = None
-        if "published" not in data:
-            data["published"] = None
-        if "views_count" not in data:
-            data["views_count"] = None
-        if "title" not in data:
-            data["title"] = None
-        if "cover_url" not in data:
-            data["cover_url"] = None
-        if "created_at" not in data:
-            data["created_at"] = None
-        if "id" not in data:
-            data["id"] = None
-        if "min_price" not in data:
-            data["min_price"] = None
-        if "cover_url" not in data:
-            data["cover_url"] = None
-        if "published_at" not in data:
-            data["published_at"] = None
-        if "short_text" not in data:
-            data["short_text"] = None
+        data = satisfy_dict(data, {
+            "purchase_count": None,
+            "earnings": None,
+            "downloads_count": None,
+            "published": None,
+            "views_count": None,
+            "title": None,
+            "cover_url": None,
+            "created_at": None,
+            "id": None,
+            "min_price": None,
+            "cover_url": None,
+            "published_at": None,
+            "short_text": None,
+        })
 
         return cls(
             cover_url=data["cover_url"],
